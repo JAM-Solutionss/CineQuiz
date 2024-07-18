@@ -1,0 +1,8 @@
+.sAlert {
+    background-color: red;
+    color: white;
+}
+
+.stButton > button {
+    background-color: blue;
+}
