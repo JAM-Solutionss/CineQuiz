@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from backend.modules.random_movie import get_movie
+from backend.modules.random_movie import get_movie_title
 from backend.modules.omdb_api import get_movie_data
 import random
 import requests
@@ -78,7 +78,7 @@ def get_data() -> dict:
     return data
 
 def generate_title() -> str:
-     return get_movie()
+     return get_movie_title()
 
 def change_state(user_answer, *args):
     set_button_state(user_answer)

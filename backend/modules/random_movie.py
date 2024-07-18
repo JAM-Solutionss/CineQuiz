@@ -4,13 +4,13 @@ import os
 from dotenv import load_dotenv
 import random
 from filter import filter, common_search_words
-from omdb_api import get_API_response
+from omdb_api import get_API_response, filter_movie_data
 import streamlit as st
 load_dotenv()
 
 os.environ["OMDB_API"] = st.secrets['OMDB_API']
 
-def get_movie(keyword):
+def get_movie_title(keyword):
     
     response = get_API_response(keyword, 'search')
 
@@ -27,13 +27,14 @@ def get_movie(keyword):
         print(f"Error with the request: {response.status_code}")
         print(response.text)
 
-def get_movie_data(title):
+def get_movie_data(keyword):
 
-    response = get_API_response_by_title(title)
+    response = get_API_response(keyword, 'search')
 
     if response is not None:
         data = response.json()
         filtered_data = filter_movie_data(data)
+        print(filtered_data)
         return json.dumps(filtered_data, indent=4)
     else:
         print(f"Error getting movie data. Response is None.")
@@ -50,5 +51,7 @@ if __name__ == '__main__':
     # d = get_movie_data(title)
     # print(d)
     # print(resp.json())
-    movie = get_movie('love')
-    print(movie)
+    # movie = get_movie_title('love')
+    # print(movie)
+    gmovie = get_movie_data('love')
+    print(gmovie)
