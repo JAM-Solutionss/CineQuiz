@@ -137,7 +137,6 @@ def display_quiz():
     if st.session_state.quiz_started:
         with st.spinner('Loading quiz data...'):
             load_quiz_data()
-
         data1 = json.loads(st.session_state.quiz_data["data1"])
         data2 = json.loads(st.session_state.quiz_data["data2"])
         data3 = json.loads(st.session_state.quiz_data["data3"])
@@ -172,11 +171,16 @@ def display_quiz():
         else:
             data = None
         st.divider() 
+        set_temp_movie(data)
         display_question(winner_movie_data=data)
         st.divider()
         st.button("End Quiz", on_click=end_game, key="end_quiz", type="primary")            
+def set_progress(wert: bool):
+     st.session_state['in_progress'] = wert
+     
+def set_temp_movie(data):
+   st.session_state['temp_movie'] = data
 
-        
 def load_quiz_data():
     if "quiz_data" not in st.session_state or st.session_state.quiz_data is None:
         st.session_state.quiz_data = {
@@ -190,9 +194,13 @@ def load_quiz_data():
            st.session_state.score = 0   
     if "round" not in st.session_state:
             st.session_state.round = 1
+    if "temp_movie" not in st.session_state:
+        st.session_state.temp_movie = {}
+    if "in_progress" not in st.session_state:
+        st.session_state.in_progress = "True"
     
     
         
-    
+  
 display_quiz()
-
+st.session_state.in_progress
