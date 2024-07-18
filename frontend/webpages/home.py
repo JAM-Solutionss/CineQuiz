@@ -18,6 +18,10 @@ st.title("CineBrowse")
 def set_button_state(user_answer):
      st.session_state.quiz_data['user_answer'] = user_answer
      
+def end_game():
+     del st.session_state.quiz_started
+     del st.session_state.quiz_data
+     
 
 def get_image_dimensions(url):
     if url is None or url == 'N/A':
@@ -56,7 +60,7 @@ def change_state(user_answer, *args):
         result = checkwinner(st.session_state.quiz_data["winner_movie"], st.session_state.quiz_data["user_answer"])
         st.success(result)
         del st.session_state.quiz_data  # Reset quiz data for next question
-    elif "user_answer" in st.session_state.quiz_data == "":
+    elif "user_answer" in st.session_state.quiz_data is None:
         st.session_state.quiz_started = False        
         del st.session_state.quiz_data  
 
@@ -146,7 +150,7 @@ def display_quiz():
         st.divider() 
         display_question(winner_movie_data=data)
         st.divider()
-        st.button("End Quiz", on_click=change_state, args=(st.session_state.quiz_data["user_answer"],))
+        st.button("End Quiz", on_click=end_game)
             
 
         
@@ -162,9 +166,5 @@ def load_quiz_data():
     
         
     
-
-    
-        
-st.session_state
 display_quiz()
 
