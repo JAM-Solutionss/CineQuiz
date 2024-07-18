@@ -74,7 +74,10 @@ def change_state(user_answer, *args):
     set_button_state(user_answer)
     if not "user_answer" in st.session_state.quiz_data  == "":
         result = checkwinner(st.session_state.quiz_data["winner_movie"], st.session_state.quiz_data["user_answer"])
-        st.session_state.quiz_result = result
+        if 'Incorrect' in result:
+            st.error(result, icon="❌")
+        else:
+            st.success(result, icon="✅")
         del st.session_state.quiz_data  # Reset quiz data for next question
     elif "user_answer" in st.session_state.quiz_data is None:
         st.session_state.quiz_started = False        
@@ -114,12 +117,14 @@ def calculate_image_heights(data1, data2, data3):
 
 def display_quiz():
     if not "quiz_started" in st.session_state:
-        st.session_state.quiz_started = False 
+        st.session_state.quiz_started = False
+        
+    if not st.session_state.quiz_started: 
+        if st.button("Start Quiz"):
+            st.session_state.quiz_started = True
+            st.rerun()
     
-    if st.button("Start Quiz") and st.session_state.quiz_started == False:
-        st.session_state.quiz_started = True
-
-    elif st.session_state.quiz_started:   
+    if st.session_state.quiz_started:
         load_quiz_data()
 
         data1 = json.loads(st.session_state.quiz_data["data1"])
@@ -155,13 +160,6 @@ def display_quiz():
             data = data3
         else:
             data = None
-            
-        if 'quiz_result' in st.session_state:
-            if 'Incorrect' in st.session_state.quiz_result:
-                st.error(st.session_state.quiz_result, icon="❌")
-            else:
-                st.success(st.session_state.quiz_result, icon="✅")        
-        
         st.divider() 
         display_question(winner_movie_data=data)
         st.divider()
