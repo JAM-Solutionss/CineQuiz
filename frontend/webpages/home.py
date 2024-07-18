@@ -12,7 +12,7 @@ from backend.modules.css import load_css
 st.set_page_config(layout="wide")
 
 # Load custom CSS
-st.markdown(load_css(r'frontend\styles.css'), unsafe_allow_html=True)
+st.markdown(load_css(r'frontend/styles.css'), unsafe_allow_html=True)
 
 st.title("CineBrowse")
  
@@ -84,18 +84,11 @@ def change_state(user_answer, *args):
 def display_movie_card(data, title_height, image_height):
                 with st.container():
                     st.markdown(f"""
-                        <div style="
-                            padding: 20px;
-                            border-radius: 10px;
-                            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-                            background-color: #f8f8f8;
-                            text-align: center;
-                            height: {image_height + title_height + 160}px;
-                        ">
-                            <h2 style="color: #333; margin-bottom: 15px;">{data.get("Title")}</h2>
-                            <img src="{data.get("Poster")}" style="width:100%; max-height: 400px; object-fit: contain; border-radius: 5px; margin-bottom: 15px;">
-                            <p style="font-size: 1.1em; color: #666;">{data.get("Year")} | {data.get("Genre")}</p>
-                            <p style="font-weight: bold; color: #444;">Metacritic: {data.get("Metascore")}</p>
+                        <div class="cards">
+                            <h2>{data.get("Title")}</h2>
+                            <img src="{data.get("Poster")}">
+                            <p class="Year">{data.get("Year")} | {data.get("Genre")}</p>
+                            <p class="Meta">Metacritic: {data.get("Metascore")}</p>
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -103,17 +96,7 @@ def display_question(winner_movie_data):
     st.header("Which movie is this?")
     st.subheader(winner_movie_data.get("Plot"))
     col1, col2, col3 = st.columns([1, 1, 1])
-    st.markdown("""
-                <style>
-                    .stButton > button {
-                        width: 100%;
-                        height: 60px;
-                        font-size: 18px;
-                        background-color: #4CAF50;
-                        color: white;
-                    }
-                </style>
-            """, unsafe_allow_html=True)   
+      
     col1.button("Movie 1", on_click=change_state, args=('data1',), key=f"movie1")
     col2.button("Movie 2", key=f"movie2", on_click=change_state, args=('data2',))
     col3.button("Movie 3", key=f"movie3", on_click=change_state, args=('data3',))
@@ -163,7 +146,7 @@ def display_quiz():
         with col3:
             display_movie_card(data3, title_height, max_image_height)
         
-
+        game_status()
         if winner_movie == "data1":
             data = data1
         elif winner_movie == "data2":
