@@ -2,15 +2,15 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from filter import *
+from backend.modules.filter import *
 
 load_dotenv()
 import streamlit as st
 
-os.environ["OMDB_API"] = st.secret['OMDB_API']
+os.environ["OMDB_API"] = st.secrets['OMDB_API']
 
 
-def get_movie(title):
+def get_movie_data(title):
     api_key = os.environ.get('OMDB_API')
     
     if api_key is None:

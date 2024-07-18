@@ -3,9 +3,12 @@ import json
 import os
 from dotenv import load_dotenv
 import random
-from filter import *
-
+from backend.modules.filter import *
+import streamlit as st
 load_dotenv()
+
+os.environ["OMDB_API"] = st.secrets['OMDB_API']
+
 
 def get_movie():
     radom_word = get_random_word()
