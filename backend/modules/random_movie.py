@@ -16,7 +16,6 @@ def get_movie_title(keyword):
 
     if response is not None:
         data = response.json()
-        print(data)
         if data['Response'] == 'True':
             for movie in data['Search']:
                 if keyword.lower() in movie['Title'].lower():
@@ -34,7 +33,6 @@ def get_movie_data(keyword):
     if response is not None:
         data = response.json()
         filtered_data = filter_movie_data(data)
-        print(filtered_data)
         return json.dumps(filtered_data, indent=4)
     else:
         print(f"Error getting movie data. Response is None.")
