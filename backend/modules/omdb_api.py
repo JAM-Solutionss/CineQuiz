@@ -11,6 +11,22 @@ import streamlit as st
 os.environ["OMDB_API"] = st.secrets['OMDB_API']
 
 def get_API_response(search_parameter, request_type) -> dict:
+    """
+    Sends a request to the OMDB API and returns the response.
+
+    Args:
+        search_parameter (str): The search term or ID to query the API with.
+        request_type (str): The type of request to make. Can be 'search', 'title', or 'imdbID'.
+
+    Returns:
+        dict: The JSON response from the API if successful, None otherwise.
+
+    Raises:
+        None, but prints error messages to console if API key is missing or request fails.
+
+    Note:
+        Requires the OMDB_API environment variable to be set with a valid API key.
+    """    
     api_key = os.environ.get('OMDB_API')
     
     if api_key is None:
