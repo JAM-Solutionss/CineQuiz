@@ -125,7 +125,8 @@ def display_quiz():
             st.rerun()
     
     if st.session_state.quiz_started:
-        load_quiz_data()
+        with st.spinner('Loading quiz data...'):
+            load_quiz_data()
 
         data1 = json.loads(st.session_state.quiz_data["data1"])
         data2 = json.loads(st.session_state.quiz_data["data2"])
