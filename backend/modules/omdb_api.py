@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 from filter import *
 
 load_dotenv()
+import streamlit as st
+
+os.environ["OMDB_API"] = st.secret['OMDB_API']
+
 
 def get_movie(title):
     api_key = os.environ.get('OMDB_API')
