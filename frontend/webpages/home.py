@@ -1,7 +1,8 @@
 import streamlit as st
 import json
-from backend.modules.random_movie import get_movie
-from backend.modules.omdb_api import get_movie_data
+from backend.modules.random_movie import get_movie_title
+from backend.modules.random_movie import get_movie_data
+from backend.modules.random_movie import get_random_keyword
 import random
 import requests
 from PIL import Image
@@ -68,16 +69,15 @@ def checkwinner(winner, user) -> str:
           subtract_score_counter()
           return "Incorrect Answer"
 
-def get_data() -> dict:
-    title = generate_title()
+def get_data(title) -> dict:
     data = get_movie_data(title)
     test = json.loads(data)
     if test.get("Title") is None:
-        return get_data()  # Retry if title is not found
+        return get_data(title)  # Retry if title is not found
     return data
 
-def generate_title() -> str:
-     return get_movie()
+def generate_keyword(keyword) -> str:
+     return get_movie_title(keyword)
 
 def change_state(user_answer, *args):
     set_button_state(user_answer)
@@ -178,10 +178,17 @@ def display_quiz():
         
 def load_quiz_data():
     if "quiz_data" not in st.session_state or st.session_state.quiz_data is None:
+        titles = []
+        for i in range(3):
+            title = get_random_keyword()
+            while title in titles:
+                title = get_random_keyword()
+            titles.append(title)
+        
         st.session_state.quiz_data = {
-            "data1": get_data(),
-            "data2": get_data(),
-            "data3": get_data(),
+            "data1": get_data(titles[0]),
+            "data2": get_data(titles[1]),
+            "data3": get_data(titles[2]),
             "winner_movie": f"data{random.randint(1, 3)}",
             "user_answer": "",
         }
@@ -189,7 +196,6 @@ def load_quiz_data():
            st.session_state.score = 0   
     if "round" not in st.session_state:
             st.session_state.round = 1
-    
     
         
     
