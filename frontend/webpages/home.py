@@ -12,8 +12,18 @@ st.set_page_config(layout="wide")
 st.title("CineBrowse")
  
 
+def game_status():
+    if "round" in st.session_state.quiz_data == 5:
+          st.success("Finished")
+          st.write(f"Your score is {st.session_state.quiz_data['score'] / 5 * 100}%")
+    elif "round" in st.session_state.quiz_data is not 5:
+          st.header(f"Round {st.session_state.quiz_data['round']}")
+          st.header(f"Score: {st.session_state.quiz_data['score'] / 5 * 100}% in {st.session_state.quiz_data['round']} rounds")
+     
 
-
+def score_counter():
+     st.session_state.quiz_data['score'] = st.session_state.quiz_data['score'] + 1
+     st.session_state.quiz_data['round'] = st.session_state.quiz_data['round'] + 1
 
 def set_button_state(user_answer):
      st.session_state.quiz_data['user_answer'] = user_answer
@@ -39,6 +49,7 @@ def checkwinner(winner, user) -> str:
      print(f"winner is : {win}")
      print(f"user_answer is : {user}")
      if user == win:
+          score_counter()
           return "Correct Answer"
      else:
           return "Incorrect Answer"
@@ -84,16 +95,27 @@ def display_movie_card(data, title_height, image_height):
                         """, unsafe_allow_html=True)
 
 def display_question(winner_movie_data):
-    st.write("Which movie is this?")
-    st.write(winner_movie_data.get("Plot"))
-    col1, col2, col3 = st.columns([1, 1, 1]) 
+    st.header("Which movie is this?")
+    st.subheader(winner_movie_data.get("Plot"))
+    col1, col2, col3 = st.columns([1, 1, 1])
+    st.markdown("""
+                <style>
+                    .stButton > button {
+                        width: 100%;
+                        height: 60px;
+                        font-size: 18px;
+                        background-color: #4CAF50;
+                        color: white;
+                    }
+                </style>
+            """, unsafe_allow_html=True)   
     col1.button("Movie 1", on_click=change_state, args=('data1',), key=f"movie1")
     col2.button("Movie 2", key=f"movie2", on_click=change_state, args=('data2',))
     col3.button("Movie 3", key=f"movie3", on_click=change_state, args=('data3',))
-    
-    
-    if st.button("Hint:", key=f"hint_button"):
-        st.write(f"The Metacritic score is: {winner_movie_data.get('Metascore')}")
+    left, middle, right = st.columns([1, 1, 1])
+    with middle:
+        if st.button("Hint:", key=f"hint_button"):
+            st.write(f"The Metacritic score is: {winner_movie_data.get('Metascore')}")
 
 def calculate_image_heights(data1, data2, data3):
             return [
@@ -136,8 +158,6 @@ def display_quiz():
         with col3:
             display_movie_card(data3, title_height, max_image_height)
         
-        st.divider()
-        st.write(winner_movie)
 
         if winner_movie == "data1":
             data = data1
@@ -150,8 +170,7 @@ def display_quiz():
         st.divider() 
         display_question(winner_movie_data=data)
         st.divider()
-        st.button("End Quiz", on_click=end_game)
-            
+        st.button("End Quiz", on_click=end_game, key="end_quiz", type="primary")            
 
         
 def load_quiz_data():
@@ -162,6 +181,8 @@ def load_quiz_data():
             "data3": get_data(),
             "winner_movie": f"data{random.randint(1, 3)}",
             "user_answer": "",
+            "score": 0,
+            "round": 1
         }
     
         
