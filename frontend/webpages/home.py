@@ -6,13 +6,15 @@ import random
 import requests
 from PIL import Image
 from io import BytesIO
+from backend.modules.css import load_css
 
 
 st.set_page_config(layout="wide")
+
+# Load custom CSS
+st.markdown(load_css(r'frontend\styles.css'), unsafe_allow_html=True)
+
 st.title("CineBrowse")
- 
-
-
 
 
 def set_button_state(user_answer):
