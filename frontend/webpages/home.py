@@ -14,7 +14,7 @@ st.set_page_config(layout="wide")
 # Load custom CSS
 st.markdown(load_css(r'frontend/styles.css'), unsafe_allow_html=True)
 
-st.set_page_config(page_title="CineBrowse" , page_icon="movie", layout=“wide”). 
+st.set_page_config(page_title="CineBrowse" , page_icon=“:bar_chart:”, layout=“wide”). 
 
 def game_status():
     if "round" in st.session_state == 5:
