@@ -22,11 +22,7 @@ def get_image_dimensions(url):
 
 
 def checkwinner(winner, user) -> str:
-     if winner == "data1" and user == winner:
-          return "Correct Answer"
-     elif winner == "data2" and user == winner:
-          return "Correct Answer"
-     elif winner == "data3" and user == winner:
+     if user == winner:
           return "Correct Answer"
      else:
           return "Incorrect Answer"
@@ -65,22 +61,22 @@ def display_movie_card(data, title_height, image_height):
                         </div>
                         """, unsafe_allow_html=True)
 
-def display_question(winner_movie):
+def display_question(winner_movie, answer):
     st.write("Which movie is this?")
     c = st.container()
     c.write(winner_movie.get("Plot"))
     col1, col2, col3 = st.columns([1, 1, 1]) 
     with col1:
         if st.button("Movie 1"):
-             st.write(checkwinner(winner_movie, "data1"))
+             st.success(checkwinner(answer, user="data1"))
              change_state() 
     with col2:
         if st.button("Movie 2"):
-             st.write(checkwinner(winner_movie, "data2"))
+             st.success(checkwinner(answer, user="data2"))
              change_state()
     with col3:
         if st.button("Movie 3"):
-             st.write(checkwinner(winner_movie, "data3"))
+             st.success(checkwinner(answer, user="data3"))
              change_state()
     
     if st.button("Hint:"):
@@ -127,7 +123,7 @@ def display_quiz():
         with col3:
             display_movie_card(data3, title_height, max_image_height)
         
-        
+        st.write(winner_movie)
     
         if winner_movie == "data1":
             data = data1
@@ -138,7 +134,7 @@ def display_quiz():
         else:
             data = None
         st.divider() 
-        display_question(data)
+        display_question(data, winner_movie)
         st.divider()
         if st.button("End Quiz"):
             change_state()
