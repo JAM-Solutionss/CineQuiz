@@ -1,16 +1,16 @@
+from urllib import response
 import requests
 import json
 import os
 from dotenv import load_dotenv
-from backend.modules.filter import *
+from filter import filter
 
 load_dotenv()
 import streamlit as st
 
 os.environ["OMDB_API"] = st.secrets['OMDB_API']
 
-
-def get_movie_data(title):
+def get_API_response(title) -> dict:
     api_key = os.environ.get('OMDB_API')
     
     if api_key is None:
@@ -20,17 +20,36 @@ def get_movie_data(title):
     url = f'http://www.omdbapi.com/?t={title}&apikey={api_key}'
 
     print(f"Request URL: {url}")
-
-    response = requests.get(url)
-
+    
+    response = requests.get(url)        
+    
     if response.status_code == 200:
-        data = response.json()
-        filtered_data = {key: data[key] for key in filter if key in data}
-        return json.dumps(filtered_data, indent=4)
+        return response
     else:
         print(f"Error with the request: {response.status_code}")
         print(response.text)
+        return None        
+
+def filter_movie_data(data: dict) -> dict:
+    filtered_data = {key: data[key] for key in filter if key in data}
+    return filtered_data       
+
+def get_movie_data(title):
+
+    response = get_API_response(title)
+
+    if response is not None:
+        data = response.json()
+        filtered_data = filter_movie_data(data)
+        return json.dumps(filtered_data, indent=4)
+    else:
+        print(f"Error getting movie data. Response is None.")
+        return None
 
 if __name__ == '__main__':
-    title = 'The Shawshank Redemption'
-    get_movie(title)
+    # title = 'The Shawshank Redemption'
+    title = 'ecwds'
+    resp = get_API_response(title)
+    d = get_movie_data(title)
+    print(d)
+    print(resp.json())
