@@ -31,7 +31,10 @@ def get_image_dimensions(url):
 
 
 def checkwinner(winner, user) -> str:
-     if user == winner:
+     win = winner
+     print(f"winner is : {win}")
+     print(f"user_answer is : {user}")
+     if user == win:
           return "Correct Answer"
      else:
           return "Incorrect Answer"
@@ -49,11 +52,11 @@ def generate_title() -> str:
 
 def change_state(user_answer, *args):
     set_button_state(user_answer)
-    if "user_answer" in st.session_state.quiz_data is not None:
+    if not "user_answer" in st.session_state.quiz_data  == "":
         result = checkwinner(st.session_state.quiz_data["winner_movie"], st.session_state.quiz_data["user_answer"])
         st.success(result)
         del st.session_state.quiz_data  # Reset quiz data for next question
-    elif "quiz_data" in st.session_state and "user_answer" in st.session_state.quiz_data == "":
+    elif "user_answer" in st.session_state.quiz_data == "":
         st.session_state.quiz_started = False        
         del st.session_state.quiz_data  
 
@@ -80,9 +83,9 @@ def display_question(winner_movie_data):
     st.write("Which movie is this?")
     st.write(winner_movie_data.get("Plot"))
     col1, col2, col3 = st.columns([1, 1, 1]) 
-    col1.movie_button1 = st.button("Movie 1", on_click=change_state, args="data1", key=f"movie1")
-    col2.movie_button2 = st.button("Movie 2", key=f"movie2", on_click=change_state, args=("data2"))
-    col3.movie_button3 = st.button("Movie 3", key=f"movie3", on_click=change_state, args=("data3"))
+    col1.button("Movie 1", on_click=change_state, args=('data1',), key=f"movie1")
+    col2.button("Movie 2", key=f"movie2", on_click=change_state, args=('data2',))
+    col3.button("Movie 3", key=f"movie3", on_click=change_state, args=('data3',))
     
     
     if st.button("Hint:", key=f"hint_button"):
@@ -102,7 +105,7 @@ def display_quiz():
     if st.button("Start Quiz") and st.session_state.quiz_started == False:
         st.session_state.quiz_started = True
 
-    if st.session_state.quiz_started:   
+    elif st.session_state.quiz_started:   
         load_quiz_data()
 
         data1 = json.loads(st.session_state.quiz_data["data1"])
@@ -143,8 +146,7 @@ def display_quiz():
         st.divider() 
         display_question(winner_movie_data=data)
         st.divider()
-        if st.button("End Quiz", on_click=change_state, args=(st.session_state.quiz_data["user_answer"],)):
-            st.write("Quiz Ended")
+        st.button("End Quiz", on_click=change_state, args=(st.session_state.quiz_data["user_answer"],))
             
 
         
