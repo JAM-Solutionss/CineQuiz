@@ -74,10 +74,7 @@ def change_state(user_answer, *args):
     set_button_state(user_answer)
     if not "user_answer" in st.session_state.quiz_data  == "":
         result = checkwinner(st.session_state.quiz_data["winner_movie"], st.session_state.quiz_data["user_answer"])
-        if 'Incorrect' in result:
-            st.error(result, icon="❌")
-        else:
-            st.success(result, icon="✅")
+        st.session_state.quiz_result = result
         del st.session_state.quiz_data  # Reset quiz data for next question
     elif "user_answer" in st.session_state.quiz_data is None:
         st.session_state.quiz_started = False        
@@ -158,6 +155,13 @@ def display_quiz():
             data = data3
         else:
             data = None
+            
+        if 'quiz_result' in st.session_state:
+            if 'Incorrect' in st.session_state.quiz_result:
+                st.error(st.session_state.quiz_result, icon="❌")
+            else:
+                st.success(st.session_state.quiz_result, icon="✅")        
+        
         st.divider() 
         display_question(winner_movie_data=data)
         st.divider()
