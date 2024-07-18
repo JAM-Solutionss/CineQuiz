@@ -3,6 +3,7 @@ import json
 from backend.modules.random_movie import get_movie_title
 from backend.modules.random_movie import get_movie_data
 from backend.modules.random_movie import get_random_keyword
+from frontend.webpages.explanation import explanation
 import random
 import requests
 from PIL import Image
@@ -23,7 +24,7 @@ def game_status():
           st.write(f"Your score is {st.session_state['score'] / 5 * 100}%")
           end_game()
           st.rerun()
-    elif "round" in st.session_state is not 5:
+    elif "round" in st.session_state != 5:
           st.header(f"Round {st.session_state['round']}")
           st.header(f"Score: {st.session_state['score'] / 5 * 100}% in {st.session_state['round']} rounds")
      
@@ -131,7 +132,8 @@ def display_quiz():
     if not st.session_state.quiz_started: 
         if st.button("Start Quiz"):
             st.session_state.quiz_started = True
-            st.rerun()
+            explanation()
+            
     
     if st.session_state.quiz_started:
         with st.spinner('Loading quiz data...'):

@@ -4,5 +4,5 @@ import streamlit as st
 def explanation():
     st.write('Explanation of the game')
     
-    if st.Button('Further'):
+    if st.button('Further'):
         st.rerun()
