@@ -3,8 +3,8 @@ import json
 import os
 from dotenv import load_dotenv
 import random
-from filter import filter, common_search_words
-from omdb_api import get_API_response, filter_movie_data
+from backend.modules.filter import filter, common_search_words
+from backend.modules.omdb_api import get_API_response, filter_movie_data
 import streamlit as st
 load_dotenv()
 
@@ -29,7 +29,7 @@ def get_movie_title(keyword):
 
 def get_movie_data(keyword):
 
-    response = get_API_response(keyword, 'search')
+    response = get_API_response(keyword, 'title')
 
     if response is not None:
         data = response.json()
@@ -40,9 +40,9 @@ def get_movie_data(keyword):
         print(f"Error getting movie data. Response is None.")
         return None
 
-def get_random_word():
-    random_word = random.choice(common_search_words)
-    return random_word
+def get_random_keyword():
+    random_keyword = random.choice(common_search_words)
+    return random_keyword
 
 if __name__ == '__main__':
     # title = 'The Shawshank Redemption'

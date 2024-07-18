@@ -3,7 +3,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from filter import filter
+from backend.modules.filter import filter
 
 load_dotenv()
 import streamlit as st
@@ -34,68 +34,7 @@ def get_API_response(search_parameter, request_type) -> dict:
     else:
         print(f"Error with the request: {response.status_code}")
         print(response.text)
-        return None   
-    
-
-def get_API_response_by_title(title) -> dict:
-    api_key = os.environ.get('OMDB_API')
-    
-    if api_key is None:
-        print("Error: OMDB_API environment variable is not set.")
-        return
-    
-    url = f'http://www.omdbapi.com/?t={title}&apikey={api_key}'
-
-    print(f"Request URL: {url}")
-    
-    response = requests.get(url)        
-    
-    if response.status_code == 200:
-        return response
-    else:
-        print(f"Error with the request: {response.status_code}")
-        print(response.text)
-        return None
-    
-def get_API_response_by_search(keyword) -> dict:
-    api_key = os.environ.get('OMDB_API')
-    
-    if api_key is None:
-        print("Error: OMDB_API environment variable is not set.")
-        return
-    
-    url = f'http://www.omdbapi.com/?s={keyword}&apikey={api_key}'
-
-    print(f"Request URL: {url}")
-    
-    response = requests.get(url)        
-    
-    if response.status_code == 200:
-        return response
-    else:
-        print(f"Error with the request: {response.status_code}")
-        print(response.text)
-        return None                
-
-def get_API_response_by_imdbID(imdbID) -> dict:
-    api_key = os.environ.get('OMDB_API')
-    
-    if api_key is None:
-        print("Error: OMDB_API environment variable is not set.")
-        return
-    
-    url = f"http://www.omdbapi.com/?i={movie['imdbID']}&apikey={api_key}"
-
-    print(f"Request URL: {url}")
-    
-    response = requests.get(url)        
-    
-    if response.status_code == 200:
-        return response
-    else:
-        print(f"Error with the request: {response.status_code}")
-        print(response.text)
-        return None      
+        return None     
 
 def filter_movie_data(data: dict) -> dict:
     filtered_data = {key: data[key] for key in filter if key in data}
