@@ -18,17 +18,24 @@ st.title("CineBrowse")
  
 
 def game_status():
-    if "round" in st.session_state.quiz_data == 5:
+    if "round" in st.session_state == 5:
           st.success("Finished")
-          st.write(f"Your score is {st.session_state.quiz_data['score'] / 5 * 100}%")
-    elif "round" in st.session_state.quiz_data is not 5:
-          st.header(f"Round {st.session_state.quiz_data['round']}")
-          st.header(f"Score: {st.session_state.quiz_data['score'] / 5 * 100}% in {st.session_state.quiz_data['round']} rounds")
+          st.write(f"Your score is {st.session_state['score'] / 5 * 100}%")
+          end_game()
+          st.rerun()
+    elif "round" in st.session_state is not 5:
+          st.header(f"Round {st.session_state['round']}")
+          st.header(f"Score: {st.session_state['score'] / 5 * 100}% in {st.session_state['round']} rounds")
      
 
-def score_counter():
-     st.session_state.quiz_data['score'] = st.session_state.quiz_data['score'] + 1
-     st.session_state.quiz_data['round'] = st.session_state.quiz_data['round'] + 1
+def add_score_counter():
+     st.session_state['score'] +=  1
+     st.session_state['round'] +=  1
+
+def subtract_score_counter():
+     if not st.session_state['score'] == 0:
+        st.session_state['score'] -=  1
+     st.session_state['round'] +=  1
 
 def set_button_state(user_answer):
      st.session_state.quiz_data['user_answer'] = user_answer
@@ -36,6 +43,8 @@ def set_button_state(user_answer):
 def end_game():
      del st.session_state.quiz_started
      del st.session_state.quiz_data
+     del st.session_state.score
+     del st.session_state.round
      
 
 def get_image_dimensions(url):
@@ -54,9 +63,10 @@ def checkwinner(winner, user) -> str:
      print(f"winner is : {win}")
      print(f"user_answer is : {user}")
      if user == win:
-          score_counter()
+          add_score_counter()
           return "Correct Answer"
      else:
+          subtract_score_counter()
           return "Incorrect Answer"
 
 def get_data() -> dict:
@@ -122,7 +132,7 @@ def display_quiz():
     if st.button("Start Quiz") and st.session_state.quiz_started == False:
         st.session_state.quiz_started = True
 
-    elif st.session_state.quiz_started:   
+    if st.session_state.quiz_started:   
         load_quiz_data()
 
         data1 = json.loads(st.session_state.quiz_data["data1"])
@@ -172,9 +182,12 @@ def load_quiz_data():
             "data3": get_data(),
             "winner_movie": f"data{random.randint(1, 3)}",
             "user_answer": "",
-            "score": 0,
-            "round": 1
         }
+    if "score" not in st.session_state:
+           st.session_state.score = 0   
+    if "round" not in st.session_state:
+            st.session_state.round = 1
+    
     
         
     
