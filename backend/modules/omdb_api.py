@@ -2,7 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-from omdb_filter import *
+from filter import *
 
 load_dotenv()
 
@@ -22,7 +22,7 @@ def get_movie(title):
     if response.status_code == 200:
         data = response.json()
         filtered_data = {key: data[key] for key in filter if key in data}
-        print(json.dumps(filtered_data, indent=4))
+        return json.dumps(filtered_data, indent=4)
     else:
         print(f"Error with the request: {response.status_code}")
         print(response.text)
