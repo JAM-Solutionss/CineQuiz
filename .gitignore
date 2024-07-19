@@ -163,5 +163,4 @@ cython_debug/
 
 
 # Unnecessary Files
-
-gpt.txt
+.streamlit/secrets.toml
