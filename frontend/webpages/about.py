@@ -1,4 +1,8 @@
 import streamlit as st
+from backend.modules.css import load_css
+
+# Load custom CSS
+st.markdown(load_css(r'frontend/styles.css'), unsafe_allow_html=True)
 
 st.title("What is CineBrowse?")
 st.write("CineBrowse is a movie quiz, where you can test your knowledge on movies and their details.")

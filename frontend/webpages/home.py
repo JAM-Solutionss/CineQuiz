@@ -17,17 +17,28 @@ st.set_page_config(layout="wide")
 # Load custom CSS
 st.markdown(load_css(r'frontend/styles.css'), unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+    /* Your custom CSS here */
+    .stNavigationMenu {
+        background-color: #f1f1f1;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("CineBrowse")
 
+
 def game_status():
+    card_number, card_score =  st.columns(2)
     if "round" in st.session_state == 5:
           st.success("Finished")
           st.write(f"Your score is {st.session_state['score'] / 5 * 100}%")
           end_game()
           st.rerun()
     elif "round" in st.session_state != 5:
-          st.header(f"Round {st.session_state['round']}")
-          st.header(f"Score: {st.session_state['score'] / 5 * 100}% in {st.session_state['round']} rounds")
+          card_number.header(f"Round {st.session_state['round']}")
+          card_score.header(f"Score: {st.session_state['score'] / 5 * 100}% in {st.session_state['round']} rounds")
      
 
 def add_score_counter():
@@ -102,7 +113,7 @@ def display_movie_card(data, title_height, image_height):
                 with st.container():
                     st.markdown(f"""
                         <div class="cards">
-                            <h2>{data.get("Title")}</h2>
+                            <h2 class="cardHeader">{data.get("Title")}</h2>
                             <img src="{data.get("Poster")}">
                             <p class="Year">{data.get("Year")} | {data.get("Genre")}</p>
                             <p class="Meta">Metacritic: {data.get("Metascore")}</p>
@@ -153,7 +164,8 @@ def display_quiz():
         data3 = json.loads(st.session_state.quiz_data["data3"])
         winner_movie = st.session_state.quiz_data["winner_movie"]
 
-        
+        game_status()
+        st.divider()
         image_heights = calculate_image_heights(data1, data2, data3) 
         max_image_height = max(image_heights)
 
@@ -172,7 +184,7 @@ def display_quiz():
         with col3:
             display_movie_card(data3, title_height, max_image_height)
         
-        game_status()
+        
         if winner_movie == "data1":
             data = data1
         elif winner_movie == "data2":
