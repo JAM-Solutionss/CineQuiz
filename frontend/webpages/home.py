@@ -26,7 +26,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("CineBrowse")
+st.title("CineQuiz")
 
 
 def game_status():
