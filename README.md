@@ -9,7 +9,7 @@ Welcome to the Streamlit app that utilizes the [Open OMDb API](http://www.omdbap
 
 ## Demo
 
-Coming soon
+[Video](https://vimeo.com/987074195?share=copy)
 
 ## Contributors
 
