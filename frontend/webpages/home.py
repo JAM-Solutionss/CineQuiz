@@ -54,10 +54,14 @@ def set_button_state(user_answer):
      st.session_state.quiz_data['user_answer'] = user_answer
      
 def end_game():
-     del st.session_state.quiz_started
-     del st.session_state.quiz_data
-     del st.session_state.score
-     del st.session_state.round
+    if "quiz_started" in st.session_state:
+          del st.session_state.quiz_started
+    if "quiz_data" in st.session_state:
+        del st.session_state.quiz_data
+    if "score" in st.session_state:
+        del st.session_state.score
+    if "round" in st.session_state:
+        del st.session_state.round
     
      
 
@@ -109,7 +113,7 @@ def change_state(user_answer, *args):
         del st.session_state.quiz_data  
 
 
-def display_movie_card(data, title_height, image_height):
+def display_movie_card(data):
                 with st.container():
                     st.markdown(f"""
                         <div class="cards">
@@ -166,23 +170,23 @@ def display_quiz():
 
         game_status()
         st.divider()
-        image_heights = calculate_image_heights(data1, data2, data3) 
-        max_image_height = max(image_heights)
+        #image_heights = calculate_image_heights(data1, data2, data3) 
+        #max_image_height = max(image_heights)
 
         # Calculate the longest title
-        titles = [data1.get("Title"), data2.get("Title"), data3.get("Title")]
-        max_title_length = max(len(title) for title in titles)
+        #titles = [data1.get("Title"), data2.get("Title"), data3.get("Title")]
+        #max_title_length = max(len(title) for title in titles)
         
         # Calculate dynamic height
-        title_height = max(60, max_title_length * 1.5) 
+        #title_height = max(60, max_title_length * 1.5) 
 
         col1, col2, col3 = st.columns([1, 1, 1])
         with col1:
-            display_movie_card(data1, title_height, max_image_height)
+            display_movie_card(data1)
         with col2:
-            display_movie_card(data2, title_height, max_image_height)
+            display_movie_card(data2)
         with col3:
-            display_movie_card(data3, title_height, max_image_height)
+            display_movie_card(data3)
         
         
         if winner_movie == "data1":
