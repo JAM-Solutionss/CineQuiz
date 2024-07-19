@@ -31,14 +31,14 @@ st.title("CineQuiz")
 
 def game_status():
     card_number, card_score =  st.columns(2)
-    if "round" in st.session_state == 5:
+    if "round" in st.session_state == 10:
           st.success("Finished")
-          st.write(f"Your score is {st.session_state['score'] / 5 * 100}%")
+          st.write(f"Your score is {st.session_state['score'] / 10 * 100}%")
           end_game()
           st.rerun()
-    elif "round" in st.session_state != 5:
+    elif "round" in st.session_state != 10:
           card_number.header(f"Round {st.session_state['round']}")
-          card_score.header(f"Score: {st.session_state['score'] / 5 * 100}% in {st.session_state['round']} rounds")
+          card_score.header(f"Score: {st.session_state['score'] / 10 * 100}% in {st.session_state['round']} rounds")
      
 
 def add_score_counter():
@@ -58,7 +58,7 @@ def end_game():
      del st.session_state.quiz_data
      del st.session_state.score
      del st.session_state.round
-     del st.session_state.show_further
+    
      
 
 def get_image_dimensions(url):
