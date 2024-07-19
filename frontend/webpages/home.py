@@ -4,6 +4,7 @@ from backend.modules.random_movie import get_movie_title
 from backend.modules.random_movie import get_movie_data
 from backend.modules.random_movie import get_random_keyword
 from frontend.webpages.explanation import explanation
+from frontend.webpages.movie_popup import movie_popup
 import random
 import requests
 from PIL import Image
@@ -46,6 +47,7 @@ def end_game():
      del st.session_state.quiz_data
      del st.session_state.score
      del st.session_state.round
+     del st.session_state.show_further
      
 
 def get_image_dimensions(url):
@@ -64,17 +66,19 @@ def checkwinner(winner, user) -> str:
      print(f"winner is : {win}")
      print(f"user_answer is : {user}")
      if user == win:
+          movie_popup(data=st.session_state.temp_movie)
           add_score_counter()
           return "Correct Answer"
      else:
+          movie_popup(data=st.session_state.temp_movie)
           subtract_score_counter()
           return "Incorrect Answer"
 
 def get_data(title) -> dict:
     data = get_movie_data(title)
-    test = json.loads(data)
-    if test.get("Title") is None:
-        return get_data(title)  # Retry if title is not found
+    #test = json.loads(data)
+    #if test.get("Title") is None:
+    #    return get_data(title)  # Retry if title is not found
     return data
 
 def generate_keyword(keyword) -> str:
@@ -128,14 +132,20 @@ def calculate_image_heights(data1, data2, data3):
 def display_quiz():
     if not "quiz_started" in st.session_state:
         st.session_state.quiz_started = False
+    
         
     if not st.session_state.quiz_started: 
         if st.button("Start Quiz"):
-            st.session_state.quiz_started = True
             explanation()
+            st.session_state.quiz_started = True
+        
+                
+                
+            
             
     
     if st.session_state.quiz_started:
+        
         with st.spinner('Loading quiz data...'):
             load_quiz_data()
         data1 = json.loads(st.session_state.quiz_data["data1"])
@@ -176,8 +186,9 @@ def display_quiz():
         display_question(winner_movie_data=data)
         st.divider()
         st.button("End Quiz", on_click=end_game, key="end_quiz", type="primary")            
-def set_progress(wert: bool):
-     st.session_state['in_progress'] = wert
+
+
+
      
 def set_temp_movie(data):
    st.session_state['temp_movie'] = data
@@ -204,10 +215,9 @@ def load_quiz_data():
             st.session_state.round = 1
     if "temp_movie" not in st.session_state:
         st.session_state.temp_movie = {}
-    if "in_progress" not in st.session_state:
-        st.session_state.in_progress = "True"
+   
     
         
   
 display_quiz()
-st.session_state.in_progress
+
