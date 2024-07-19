@@ -3,9 +3,13 @@
 
 Welcome to the Streamlit app that utilizes the [Open OMDb API](http://www.omdbapi.com) This project was created for a mini hackathon organized by Kevin Chromik.
 
+## Where to play?
+[CineQuiz](https://cinequiz.streamlit.app)
+
+
 ## Demo
 
-[Demo Video]()
+Coming soon
 
 ## Contributors
 
